@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css">
+  <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.deep_purple-pink.min.css" />
+  <link rel="stylesheet" href="style/style.css">
+  <title>JScrypt</title>
+
+
+
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular-route.js"></script>
+  <script src="js/app.js"></script>
+
+
+</head>
+  <body ng-app="js_crypt">
+    
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">JScrypt</span>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+          <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Home</a>
+          <a href="#scroll-tab-2" class="mdl-layout__tab ">Demo</a>
+          <a href="#scroll-tab-3" class="mdl-layout__tab">Problem Statement</a>
+          <a href="#scroll-tab-4" class="mdl-layout__tab">Proof of Concept Test Plan</a>
+          <a href="#scroll-tab-5" class="mdl-layout__tab">Test Plan</a>
+          <a href="#scroll-tab-6" class="mdl-layout__tab">Requirements Specification</a>
+        </div>
+      </header>
+
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Title</span>
+      </div>
+      <main class="mdl-layout__content">
+
+        <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+          <div class="page-content">
+            <h1>JScrypt Project </h1>
+            <p>An implementation of the bCrypt encryption method in node.js</p>
+          </div>
+        </section>
+
+        <section ng-contoller="mainCtrl as mCtrl" class="mdl-layout__tab-panel" id="scroll-tab-2">
+          <div class="page-content">
+
+
+          <div id="single_content">
+            <h2>hashKey</h2>
+              <div ng-controller="makeHashKeyCtrl as hashCtrl">
+                <form action="POST">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input ng-model="hashCtrl.keyInfo.key" name="key" class="mdl-textfield__input" type="text" id="sample1" />
+                    <label class="mdl-textfield__label" for="sample1">String</label>
+                  </div>
+                </form>
+                <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input ng-model="hashCtrl.keyInfo.rounds" name="rounds" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sample2" />
+                    <label ng-if="hashCtrl.keyInfo.rounds == 0"class="mdl-textfield__label" for="sample2">Number of Rounds (6-31)</label>
+                    <span class="mdl-textfield__error">Input is not a number!</span>
+                  </div>
+                </form>
+
+                <button ng-click="hashCtrl.submitKey()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect">
+                  hash
+                </button>
+
+                <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input ng-model="hashCtrl.encryptedKey" class="mdl-textfield__input" type="text" id="sample2" />
+                    <!-- <label ng-if="!hashCtrl.encryptedKey" class="mdl-textfield__label" for="sample1">Hashed Key</label> -->
+                  </div>
+                </form>
+              </div>
+          </div>
+
+
+
+
+          <div id="single_content">
+            <h2>Compare Key</h2>
+            <div ng-controller="compareKeyCtrl as compareCtrl">
+              <form action="POST">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input ng-model="compareCtrl.keys.clean" name="key" class="mdl-textfield__input" type="text" id="sample1" />
+                    <label class="mdl-textfield__label" for="sample1">String</label>
+                  </div>
+                  <br>
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input ng-model="compareCtrl.keys.encrypted" name="key" class="mdl-textfield__input" type="text" id="sample1" />
+                    <label class="mdl-textfield__label" for="sample1">Encrypted String</label>
+                  </div>
+                </form>
+              <button ng-click="compareCtrl.compareKey()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect">
+                Compare
+              </button>
+
+              <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input ng-if="compareCtrl.passEncryption != null"   ng-model="compareCtrl.passEncryption" class="mdl-textfield__input" type="text" id="sample2" />
+
+                  </div>
+                </form>
+
+            </div>
+          </div>
+
+          
+            
+          </div> <!-- page-content -->
+        </section>
+
+
+        <section class="mdl-layout__tab-panel" id="scroll-tab-3">
+          <div class="page-content"><embed src="Documents/problem_statement/problemStatement.pdf" width="100%" height="700" type='application/pdf'></div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-4">
+          <div class="page-content"><embed src="Documents/proof_of_concept_demo_plan/ProofOfConceptDemoPlan.pdf" width="100%" height="700" type='application/pdf'></div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-5">
+          <div class="page-content"><embed src="Documents/TestPlan/testPlan.pdf" width="100%" height="700" type='application/pdf'></div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="scroll-tab-6">
+          <div class="page-content"><embed src="Documents/SoftwareReqSpec/srs_jscrypt.pdf" width="100%" height="700" type='application/pdf'></div>
+        </section>
+      </main>
+
+
+    </div>
+  </body>
+</html>

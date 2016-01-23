@@ -1,0 +1,375 @@
+\documentclass[12pt]{article}
+
+\usepackage{xcolor} % for different colour comments
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{amssymb}
+
+\usepackage[%
+    left=1in,%
+    right=1in,%
+    top=1.0in,%
+    bottom=1.0in,%
+    paperheight=11in,%
+    paperwidth=8.5in%
+]{geometry}%
+
+%% Comments
+\newif\ifcomments\commentstrue
+
+\ifcomments
+\newcommand{\authornote}[3]{\textcolor{#1}{[#3 ---#2]}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\else
+\newcommand{\authornote}[3]{}
+\newcommand{\todo}[1]{}
+\fi
+
+\newcommand{\wss}[1]{\authornote{magenta}{SS}{#1}}
+\newcommand{\hm}[1]{\authornote{blue}{HM}{#1}} %Hediyeh
+\newcommand{\tz}[1]{\authornote{blue}{TZ}{#1}} %Tahereh
+\newcommand{\pl}[1]{\authornote{blue}{PL}{#1}} %Peng
+
+\begin{document}
+
+\title{Test Report for JScrypt}
+\author{Jean Lucas Ferreira, Ocean Cheung, Harit Patel}
+
+\date{\today}
+
+\maketitle
+
+
+\newpage
+  \tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+\subsection{Overview}
+This test report is designed to summarize the testing JScrypt undertook, through a series of automated testing, and manual testing (for the front-end of the project). Valid and abnormal inputs have been tested within appropriate test cases, and changes made to the program in response to the test results have been documented throughout the report.
+
+Automated testing was crucial for testing this project, and was achievable through the use of Mocha.js and Chai.js, which testing frameworks for NodeJS applications. It allowed for a quick implementation of testing, and helped find small issued with the program, which would not have been caught without automated testing (refer to Testing Conclusion for changes in the project).
+
+A web site has also been constructed for this project, to allow for an easier visualization of how the program works, and to see what are outputs given certain inputs. Testing of this section will be done through a manual testing approach, and a component testing, by which the clickability and response of buttons on the website will be visually inspected.
+
+
+
+
+
+\section{Functional Requirements Testing}
+\subsection{Overview}
+Testing of the functional requirements was created through a series of automated unit testing, while following a mix of black-box and white-box testing approach. The black-box testing was used to verify certain functional requirements, and assert that correct valued were being returned on a given input. While white-box testing helped in finding issues with the code that was not taken in consideration during development, and was not specified in the functional requirements.
+
+\subsection{Test Results}
+Tests were split up into two sections, one for JScrypt.js which is responsible for handling user input.The second section is Eksblowfish.js which is responsible for the encryption algorithm. \newline
+
+\noindent \textbf{Module Tested:} JScrypt.js \\
+\noindent These are the initialized global variables in this module: \\
+\textbf{Global Variables:}
+
+\noindent BCRYPT\_VERSION = `2a' \newline
+DEFAULT\_ROUNDS = 10 \newline
+MIN\_ROUNDS = 6 \newline
+MAX\_ROUNDS  = 31 \newline
+SALT\_LENGTH\_BYTE = 16 \newline
+SALT\_LENGTH\_CHAR = 22 \newline
+KEY\_HASH\_SIZE = 31 \newline
+MIN\_KEY\_SIZE = 1 \newline
+MAX\_KEY\_SIZE = 56 \newline
+
+
+\noindent \textbf{Test File:} JSCrypt.test.js \newline
+\textbf{Test Unit:} generateRandomSalt tests \newline
+
+\begin{table}[H]
+\centering
+      \caption{generateRandomSalt tests}
+        \label{tab:table1}
+      % \label{tab: Table 1}
+      \begin{tabular}{ | p{1cm} | p{5cm} | p{4cm} | p{3cm} | p{1.2cm} | }
+        \hline
+            \textbf{Test Case \#} & \textbf{Initial State} & \textbf{Input} & \textbf{Expected \newline Output} & \textbf{Result} \\
+        \hline
+          1 & -Global variables initialized \newline -Local variables declared but not initialized & rounds = 10 & A variable that is of type String & Pass \\
+       \hline
+          2 & -Global variables initialized \newline -Local variables declared but not initialized & rounds = 10 & A random string of 22 characters & Pass \\
+       \hline
+      \end{tabular}
+  \end{table}
+
+  \break
+
+  \textbf{Test Unit:} hashKey tests \newline
+  \begin{table}[H]
+  \centering
+        \caption{hashKey tests}
+          \label{tab:table2}
+        % \label{tab: Table 2}
+        \begin{tabular}{ | p{1cm} | p{5cm} | p{4cm} | p{3cm} | p{1.2cm} | }
+          \hline
+              \textbf{Test Case \#} & \textbf{Initial State} & \textbf{Input} & \textbf{Expected Output} & \textbf{Result} \\
+          \hline
+            1 & -Global variables initialized \newline -Local variables declared but not initialized & key = `  ' \newline rounds = 8 & null & Pass \\
+          \hline
+            2 & -Global variables initialized \newline -Local variables declared but not initialized & key = `superSecretKey' \newline rounds = 1 & A variable that is of type String & Pass \\
+          \hline
+            3 & -Global variables initialized \newline -Local variables declared but not initialized & key = `superSecretKey' \newline rounds = 8 & Variable that is a hashed string & Pass \\
+          \hline
+            4 & -Global variables initialized \newline -Local variables declared but not initialized & key = null \newline rounds = 8 & null & Pass \\
+         \hline
+        \end{tabular}
+    \end{table}
+
+\break
+  \textbf{Test Unit:} getComponents tests \newline
+
+\begin{table}[H]
+\centering
+      \caption{getComponents tests}
+        \label{tab:table3}
+      % \label{tab: Table 3}
+      \begin{tabular}{ | p{1cm} | p{5cm} | p{4cm} | p{3cm} | p{1.2cm} | }
+        \hline
+            \textbf{Test Case \#} & \textbf{Initial State} & \textbf{Input} & \textbf{Expected Output} & \textbf{Result} \\
+        \hline
+          1 & -Global variables initialized \newline -Local variables declared but not initialized & key = `' & Empty Array - [] & Pass \\
+        \hline
+          2 & -Global variables initialized \newline -Local variables declared but not initialized & key = `\$2b\$10\$IpocdZqL9TA \newline8ZW2EWvpBJAa5w1 \newline QjNqmxAAAAAAGqo \newline VPw==' & Empty Array - [] & Pass \\
+        \hline
+          3 & -Global variables initialized \newline -Local variables declared but not initialized & key1 = `\$2a\$34\$IpocdZqL9TA \newline8ZW2EWvpBJAa5w1 \newline QjNqmxAAAAAAGqo \newline VPw==' \newline key2 = `\$2a\$04\$IpocdZqL9TA \newline 8ZW2EWvpBJAa5w1 \newline QjNqmxAAAAAAGqo \newline VPw==' & Output 1: \newline Empty Array - [] \newline Output2: \newline Empty Array - [] & Pass \\
+        \hline
+          4 & -Global variables initialized \newline -Local variables declared but not initialized & key = `\$2a\$10\$IpocdZqL9TA \newline8ZW2EWvpBJAa5w1 \newline QjNqmxAAAAAAGqo \newline VPw\%\%==' & Empty Array - [] & Pass \\
+          \hline
+            5 & -Global variables initialized \newline -Local variables declared but not initialized & key = `\$2a\$10\$IpocdZqL9TA \newline8ZW2EWvpBJAa5w1 \newline QjNqmxAAAAAAGqo \newline VPw==' & Array: \newline [`2a',10, \newline `IpocdZqL9TA8 \newline ZW2EWvpBJA', \newline `a5w1QjNqmxA \newline AAAAAGqo \newline VPw=='] & Pass \\
+       \hline
+      \end{tabular}
+  \end{table}
+
+  \break
+
+  \textbf{Test Unit:} compareKey tests \newline
+    \begin{table}[H]
+    \centering
+            \caption{compareKey tests}
+              \label{tab:table5}
+            % \label{tab: Table 5}
+            \begin{tabular}{ | p{1cm} | p{5cm} | p{4cm} | p{3cm} | p{1.2cm} | }
+            \hline
+                \textbf{Test Case \#} & \textbf{Initial State} & \textbf{Input} & \textbf{Expected \newline Output} & \textbf{Result} \\
+            \hline
+              1 & -Global variables initialized \newline -Local variables declared but not initialized. & clean = password123 \newline hash = \newline \$2a\$10\$K86nOX5LU \newline sm/FppRpefo8ADN \newline nx+B+oMlXXXXXG \newline AAAAAA== & False & Pass \\
+            \hline
+              2 & -Global variables initialized \newline -Local variables declared but not initialized. & clean = password123 \newline hash = \newline \$2a\$10\$K86nOX5LU \newline sm/FppRpefo8ADN \newline nx+B+oMldIhZ0G \newline AAAAAA== & True & Pass \\
+            \hline
+            \end{tabular}
+        \end{table}
+
+
+
+    \break
+
+    \noindent \textbf{Module Tested:} eksBlowfish.js \newline
+    In this module the global variables declared are: \\
+     \textit{p\_arrays} \\
+     \textit{s\_boxes} \\
+    \noindent which consist of arrays of random hexadecimal values generated from Pi. These values were taken directly from the blowfish’s (and simplification of Eksblowfish) official website. \newline (https://www.schneier.com/code/constants.txt) \break
+
+
+    \noindent\textbf{Test File:} eksBlowfish/test.js \newline
+     \textbf{Test Unit:} feistel\_cipher test \newline
+    \begin{table}[H]
+    \centering
+          \caption{feistel\_cipher test}
+            \label{tab:table2}
+          % \label{tab: Table 2}
+          \begin{tabular}{ | p{1cm} | p{5cm} | p{4cm} | p{3cm} | p{1.2cm} | }
+            \hline
+                \textbf{Test Case \#} & \textbf{Initial State} & \textbf{Input} & \textbf{Expected \newline Output} & \textbf{Result} \\
+            \hline
+              1 &   -Global variables initialized \newline -An instance of the eksBlowfish object & xl = 112888726 \newline xr = -1272277262 & Array: [419532600, \newline 26624517] & Pass \\
+            \hline
+
+
+          \end{tabular}
+      \end{table}
+
+
+      \break
+
+       \textbf{Test Unit:} feistel\_F test \newline
+      \begin{table}[H]
+      \centering
+            \caption{feistel\_F test}
+              \label{tab:table2}
+            % \label{tab: Table 2}
+            \begin{tabular}{ | p{1cm} | p{5cm} | p{4cm} | p{3cm} | p{1.2cm} | }
+              \hline
+                  \textbf{Test Case \#} & \textbf{Initial State} & \textbf{Input} & \textbf{Expected \newline Output} & \textbf{Result} \\
+              \hline
+                1 &   -Global variables initialized \newline -An instance of the eksBlowfish object & xl = 579199262  & Integer: 2684460832 & Pass \\
+              \hline
+
+
+            \end{tabular}
+        \end{table}
+
+
+
+\section{Non-Functional Requirements Testing}
+
+\subsection{Usability Requirements:}
+The usability of the JScrypt project requires the users to have an introductory level of Node.js knowledge. The usability of this project was tested through giving five participants who were new to Node.js a list of tasks such as installing the JScrpyt project for use, running a local server to test features, and testing the encryption methods included in the JScrypt project.
+
+All of the participants were able to install the JScrypt project for use easily with the input of one command, `npm install'. The `npm install' command automatically creates the dependencies (node modules) required for the JScrypt project to operate.
+
+Most of the participants were able to start a local node server with ease through entering the command “npm start” into their shell environment. This was enough evidence to show that the JScrypt project is usable by those with an introductory level knowledge of Node.js. \textcolor{red}{After creating the local node server, users were able to access the contents of our graphical user interface through entering the address localhost:3000 on their default browsers (Safari Version 9.0.1, Google Chrome Version 47.0, and Firefox Version 42.0).}
+
+The JScrypt project provides a graphical user interface (GUI) to users after starting their local servers and the users who managed to start their local node servers had little problem in interacting with the JScrypt functions such the hashKey, and getComponents methods.
+
+\subsection{Performance / Speed Requirements:}
+The performance and speed of the JScrypt project is designed to intentionally operate slowly. The encryption algorithm we used (eksBlowfish) is very resource intensive and this is meant to deter hackers from attempting to unhash information through brute forcing the algorithm. Increasing the cost (number of rounds) would also increase the amount of time required for the hashing process.
+
+The following table outlines a test created to find an approximate time hashing requires based on the number of rounds. In this test, the string `dog' was hashed and the approximate time is derived from the average of 10 runtimes of JScrypt.
+
+
+\begin{table}[H]
+\centering
+      \caption{Cost versus Time}
+        \label{tab:table4}
+      % \label{tab: Table 4}
+      \begin{tabular}{ | p{4cm} | p{4cm} | }
+        \hline
+            \textbf{Number of Rounds} & \textbf{Approximate Time (seconds)} \\
+        \hline
+          10 & 0.2303 \\
+       \hline
+          11 & 0.3569 \\
+       \hline
+          12 & 0.5533 \\
+       \hline
+          13 & 1.0157 \\
+       \hline
+          14 & 1.8059 \\
+       \hline
+          15 & 3.4548 \\
+       \hline
+          16 & 6.1625 \\
+       \hline
+          17 & 12.5335 \\
+       \hline
+          18 & 23.8967 \\
+       \hline
+      \end{tabular}
+  \end{table}
+
+\subsection{Robustness:}
+The hashing method included in the JScrypt project only supports hashing inputs of strings with any number of characters between 1 and 51. If an input with 0 characters or an input with greater than 52 characters was given then the string provided will not be hashed. Also, if the string defined was incorrectly inputted by the user then the string hashed would not be the same string the user wishes to have hashed. When comparing the incorrectly hashed string with a correct raw string, the result returned would show that the strings are different due to the human error involved.
+
+\subsection{Operational and Environment:}
+The JScrypt project is designed to work on the official supported browsers of the Node.js JavaScript framework. The JScrypt project can operate on any operating system (Windows, OSX, Linux, Android, iOS, and more) as long as the operating system has access to \textcolor{red}{one of the supported browsers capable of compiling Node.js. Internet Explorer, Firefox, and Safari are capable of running Node.js but Node.js is optimized to be run on Google Chrome because the V8 JavaScript Engine which the language relies on to compile is optimized for Google Chrome.}
+
+\section{Testing Summary}
+
+\subsection{Changes Summary}
+Throughout the construction of the automated testing and manual testing, there were some issues with program that were found, and required changes to be made to the code. The majority of these issues were related to input checking, since some of the functions were not checking all possible boundaries of the input before continuing its functionality.
+
+\subsection{Changes Implemented}
+  \begin{itemize}
+    \item Added more checks to the input of getComponents in order to verify that the input hashKey is not null, or is constructed with an invalid format. If either are true, getComponents should return an empty array to signal it was not able to extract all components of the hash key string.
+
+    \item In hashKey, a check for null on the key string was implemented. Due to a test case failing on null inputs.
+
+  \end{itemize}
+
+\subsection{Traceability Summary}
+  \begin{enumerate}
+  \item \textbf{Treaceability to Modules} \newline Please refer to this document’s `Functional Requirements Testing' section for the traceability of the modules.
+
+  \item \textbf{Traceability to Requirements} \newline Please refer to the Software Requirements Specification Document revision 0 (Section 9) for the corresponding requirement numbers
+
+  \end{enumerate}
+
+  \begin{table}[H]
+  \centering
+        \caption{Traceability to Requirements}
+          \label{tab:table2}
+        % \label{tab: Table 2}
+        \begin{tabular}{ | p{5cm} | p{1cm} | p{1cm} | p{1cm} | p{1cm} | p{1cm} | }
+          \hline
+              tests  & req1 & req2 & req3 & req4 & req5 \\
+          \hline
+            generateRandomSalt   & \checkmark & \checkmark & N/A & N/A & N/A \\
+          \hline
+            hashKey  & \checkmark & \checkmark & N/A & N/A & \checkmark \\
+          \hline
+            getComponents  & N/A & N/A & \checkmark & \checkmark & N/A \\
+          \hline
+            compareKey  & N/A & N/A & \checkmark & \checkmark & N/A \\
+          \hline
+            feistel\_cipher  & N/A & N/A & \checkmark & N/A & N/A \\
+          \hline
+            feistel\_F  & N/A & N/A & \checkmark & N/A & N/A \\
+          \hline
+
+
+        \end{tabular}
+    \end{table}
+
+
+
+\subsection{Code Coverage Summary}
+  While following a white-box testing approach for constructing the automated testing, the test cases were designed in order to have statement, branch, and conditional coverage. Though, we did not have function coverage since we believed testing would be more accurately constructed by look at each specific function by itself in solitary. For example, in the JScrypt.test file , each test cases for getComponents were specifically designed such that all the ‘if’ statements were executed (for statement coverage).
+
+
+\section{Revision History}
+\begin{table}[H]
+\centering
+      \caption{Revision History}
+        \label{tab:table2}
+      % \label{tab: Table 2}
+      \begin{tabular}{ | p{4cm} | p{2cm} | p{4cm} | p{4cm}  | }
+        \hline
+            \textbf{Date} & \textbf{Revision \#} & \textbf{Authors} & \textbf{Description} \\
+        \hline
+          September 21 & 0 & All members & A Problem Statement  \\
+        \hline
+          September 28 & 0 & All members & Proof of Concept Plan \\
+        \hline
+          October 5 & 0 & All members & Software Requirements Specification \\
+        \hline
+          October 19 & 0 & All members & Test Plan \\
+        \hline
+          October 26 & 0 & All members & Proof of Concept Demonstration \\
+        \hline
+          November 2 & 0 & All members & Design Document \\
+        \hline
+          November 9 & 0 & All members & Revision 0 Demonstration \\
+        \hline
+          \textcolor{red}{ November 27} & \textcolor{red}{1} & \textcolor{red}{All members} & \textcolor{red}{Software Requirements Specification} \\
+        \hline
+          \textcolor{red}{ November 27} & \textcolor{red}{1} & \textcolor{red}{All members} & \textcolor{red}{Test Plan} \\
+        \hline
+          \textcolor{red}{ November 27} & \textcolor{red}{1} & \textcolor{red}{All members} & \textcolor{red}{Design Document} \\
+        \hline
+          November 26 & 0 & All members & Test Report \\
+        \hline
+          November 28 & 1 & All members & Iteration to revision 1 \\
+        \hline
+          November 30 & 1 & All members & Revision 1 Demonstration \\
+        \hline
+          December 8 & 1 & All members & Revision 1 Document \\
+        \hline
+         \textcolor{red}{ December 6} & \textcolor{red}{1} & \textcolor{red}{All members} & \textcolor{red}{Software Requirements Specification} \\
+        \hline
+          \textcolor{red}{ December 6} & \textcolor{red}{1} & \textcolor{red}{All members} & \textcolor{red}{Design Document} \\
+        \hline
+          \textcolor{red}{ December 7} & \textcolor{red}{1} & \textcolor{red}{All members} & \textcolor{red}{Test Report} \\
+        \hline
+      \end{tabular}
+  \end{table}
+\end{document}

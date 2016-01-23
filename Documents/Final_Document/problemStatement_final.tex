@@ -1,0 +1,67 @@
+\documentclass[12pt]{article}
+
+
+\usepackage{xcolor} 
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{amssymb}
+
+\usepackage[%
+    left=1in,%
+    right=1in,%
+    top=1.0in,%
+    bottom=1.0in,%
+    paperheight=11in,%
+    paperwidth=8.5in%
+]{geometry}%
+
+%% Comments
+\newif\ifcomments\commentstrue
+
+\ifcomments
+\newcommand{\authornote}[3]{\textcolor{#1}{[#3 ---#2]}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\else
+\newcommand{\authornote}[3]{}
+\newcommand{\todo}[1]{}
+\fi
+
+\newcommand{\wss}[1]{\authornote{magenta}{SS}{#1}}
+\newcommand{\hm}[1]{\authornote{blue}{HM}{#1}} %Hediyeh
+\newcommand{\tz}[1]{\authornote{blue}{TZ}{#1}} %Tahereh
+\newcommand{\pl}[1]{\authornote{blue}{PL}{#1}} %Peng
+
+\begin{document}
+
+\title{Problem Statement for JScrypt}
+\author{Jean Lucas Ferreira, Ocean Cheung, Harit Patel}
+
+\date{\today}
+
+\maketitle
+
+
+\newpage
+  \tableofcontents
+
+\newpage
+
+\section*{\centering{Problem Statement}}
+
+\section{What problem are we trying to solver?}
+  When developers are creating authentication services for their web applications, there are multiple ways to store sensitive information about the user. The common techniques for this can usually be resolved with hash functions, such as MD5, SHA1, SHA256, and many more. Even though these hash functions are irreversible, they come with a weakness. Due to their popularity and usage in many applications over the years, hackers have found efficient brute force techniques for cracking the hashes, through rainbow tables, and hash dictionaries. The problem we are trying to solve is to make brute force attacks on encrypted information seemingly impossible. \textcolor{red} {Which can be solved by using bCrypt, a famous encryption algorithm known for being computationally slow on purpose.}
+
+
+\section{Why is this an important problem?}
+
+  Encryption techniques are important for creating a secure and reliable world where technology can be trusted with sensitive information. Society has learned to trust technology and have also benefited greatly from the conveniences created by online banking and online shopping. Even in the event of a security breach into a database, the encryption adds an extra layer of security to protect sensitive information such as passwords or credit card numbers. For example, when Sony’s PlayStation Network encountered a security breach in 2011, 77 million users were affected. Even though hackers found a security vulnerability to breach the network, information such as user credit card numbers were still secure and encrypted, making it useless to the hackers.
+
+\section{What is the context of the problem you are solving?}
+
+  Scope of the problem includes developers lacking a reliable, user-friendly, and a robust encryption library to bar access to sensitive information from unauthorized users. By utilizing bCrypt, developers will be able to create more robust encrypted passwords with minimal effort. Additionally, they will be able to authenticate users easily given functions that will compare the user provided password with the encrypted password. Moreover, the functions and algorithms provided by bCrypt will not impede or affect the developers’ projects or the user experience in any way. Developers worldwide will be able to take advantage of this lightweight and user-friendly library to secure sensitive information. \textcolor{red}{With this scope, our targeted stakeholders are web developers, of all skills, but also encryption enthusiasts and open source developers.}
+
+
+\end{document}

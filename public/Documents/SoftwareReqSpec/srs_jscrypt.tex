@@ -1,0 +1,505 @@
+\documentclass[12pt]{article}
+
+\usepackage{xcolor} % for different colour comments
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+ \usepackage{multirow}
+
+
+\usepackage[%
+    left=1in,%
+    right=1in,%
+    top=1.0in,%
+    bottom=1.0in,%
+    paperheight=11in,%
+    paperwidth=8.5in%
+]{geometry}%
+
+%% Comments
+\newif\ifcomments\commentstrue
+
+\ifcomments
+\newcommand{\authornote}[3]{\textcolor{#1}{[#3 ---#2]}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\else
+\newcommand{\authornote}[3]{}
+\newcommand{\todo}[1]{}
+\fi
+
+\newcommand{\wss}[1]{\authornote{magenta}{SS}{#1}}
+\newcommand{\hm}[1]{\authornote{blue}{HM}{#1}} %Hediyeh
+\newcommand{\tz}[1]{\authornote{blue}{TZ}{#1}} %Tahereh
+\newcommand{\pl}[1]{\authornote{blue}{PL}{#1}} %Peng
+
+\begin{document}
+
+\title{Software Requirements for JScrypt} 
+\author{Jean Lucas Ferreira, Ocean Cheung, Harit Patel}
+
+\date{\today}
+	
+\maketitle
+
+
+\newpage
+  \tableofcontents
+
+\newpage
+ 
+\section*{\centering {Project Drivers}}
+\section{The Purpose of the Project}
+ 
+The purpose of this project, is to re-implement bCrypt, and allow web developers to safely store sensitive user information in a database. Once implemented correctly, the stored information should be seemingly impossible to decipher through brute force, independently of the power of the computer, and will also keep up with Moore’s Law, naturally by it’s design. 
+ 
+
+\section{The Client, the Customer and other Stakeholders}
+
+\subsection{The Client}
+Developers wishing to encrypt sensitive information about the users of their web application.
+
+\subsection{The Customer}
+The users of web applications that implemented the JScrypt library. These applications could be storing information such as passwords, credit card numbers, social insurance number, et cetera.
+
+\subsection{Other Stakeholders}
+	\begin{itemize}
+
+	  \item Contributors: Developers interested in the development process of the project, who are willing to share their knowledge in order to develop a better library.
+	  \item Testers: These may be developers, or regular clients who will test the project’s functionality and usability.
+
+	  \item Security and Encryption Specialist: Building an encryption algorithm can be very complex, and may be prone to loopholes for hackers if specific procedures are not taken. Therefore a specialist would be a great investment for the project in order to verify its security. 
+	\end{itemize}
+
+\section{Users of the Product}
+
+\subsection{ The Hands-On Users of the Product}
+Developers with minimal experience with NodeJS can follow the documentation and use the library to encrypt and decrypt passwords.
+
+\subsection{Priorities Assigned to Users}
+
+	\begin{itemize}
+		\item The primary users of this library are web developers that wish to protect sensitive information by encrypting and decrypting sensitive information.
+
+		\item The secondary users include users of application that utilize the library, as well as contributors and testers that may add on to the library.
+	\end{itemize}
+
+\subsection{User Participation}
+
+	\begin{itemize}
+		\item User installs and imports the library into their application.
+		\item User provides sensitive information to be encrypted 
+		\item User may compare text with encrypted password to check for authorization
+	\end{itemize}
+
+
+\subsection{Maintenance Users and Service Technicians}
+Maintained by the development team, testers and contributors. \\ \\ \\
+
+\section*{\centering {Project Constraints}}
+\section{Mandated Constraints}
+\subsection{Solution Constraints}
+\begin{itemize}	
+
+	\item	\textbf{Description:} Project must be completed by November 9, 2015 \\
+		\textbf{Rationale:} Date for which Revision 0 demonstration is due. \\
+		\textbf{Fit Criterion:} N/A 
+
+	
+	\item	\textbf{Description:} The library must operate in the same manner, regardless of operating system, and web   browser. \\
+		\textbf{Rationale:} DDevelopers wishing to use the library shouldn’t have to change their developing environment. Rather all they require is NodeJS to be installed on their system. Similarly, the users of the library shouldn’t have to use specific web browsers in order to have their information safely stored.\\
+		\textbf{Fit Criterion:} The testers will test the library under several web browsers and operating systems to assure portability.\\
+\end{itemize}
+
+
+\subsection{Implementation Environment of the Current System}
+	The project will be entirely written in JavaScript, within the NodeJS runtime environment.
+
+\subsection{Partner of Collaborative Applications}
+	N/A.
+
+\subsection{Off-the-Shelf Software}
+	There exists many implementations of bCryot, in multiple languages, which can be used as reference.
+
+
+\subsection{Anticipated Workplace Environment}
+	\begin{itemize}
+	\item On any computer system (Windows, Linux, Mac), or mobile device.
+	\item Any web browser with javascript enabled (Chrome, Mozilla Firefox, Safari, IE, Opera).
+	\end{itemize}
+
+
+\subsection{Schedule Constraints}
+
+	\begin{itemize}
+	\item Test Plan Revision 0: October 5, 2015
+	\item Proof of Concept Demonstration: October 26, 2015
+	\item Design Document Revision 0: November 2, 2015
+	\item Revision 0 Demonstration: November 9, 2015
+	\end{itemize}
+
+
+\subsection{Budget Constraints}
+	There is no budget constraint for this project, and JScrypt will be open source and completely free once completed. 
+
+
+\section{Naming Conventions and Definitions}
+\subsection{Definition of all Terms}
+
+\begin{itemize}
+	\item \textbf{NodeJS:} An open-source runtime environment for developing server-side applications in JavaScript. 
+	\item \textbf{Key:}  A key is a string of characters to be encrypted, they are sensitive information given by the user.
+	\item \textbf{Blowfish:} An algorithm that uses block ciphers to encrypt/decrypt keys. 
+	\item \textbf{Eksblowfish:}  Expensive Key Schedule blowfish, the main algorithm of bCrypt, which is an extension of blowfish that allows the addition of a salt, and cost parameters.  
+	\item \textbf{Encryption:}  Encoding passwords into an incomprehensible string of ASCII characters. 
+	\item \textbf{Decryption:} Decoding an Encrypted password to retrieve the original provided password. 
+	\item \textbf{Plaintext:} A key given to the encryption algorithm that needs to be encrypted. 
+	\item \textbf{Ciphertext:} A representation of the plaintext, but is an illegible string. 
+	\item \textbf{Brute Force:}  A trial and error method used by applications to decode encrypted data. 
+	\item \textbf{Open Source:} Software that can be used, changed, and shared by anyone. 
+	\item \textbf{String:}  A sequence of characters. 
+	\item \textbf{Database:}  A collection of data that is organized to allow it to be easily accessed, managed and updated. 
+	\item \textbf{Runtime Environment:} A configuration of hardware and software that is used to run certain applications.
+	\item \textbf{Library:}  A collection of functions and software packages that can be imported into certain applications.  
+\end{itemize}
+
+\subsection{Data Dictionary for Any Include Models}
+	\underline{input} 
+	\begin{itemize}
+		\item \textbf{Key} (String): The information required to be encrypted
+		\item \textbf{Cost} (Integer): The work factor of the algorithm, the larger the number, the slower the algorithm will be, but it will be more difficult on brute-force attacks.
+		\item \textbf{Salt} (String): A unique salt is given to each stored key, it is used in the encryption process.
+	\end{itemize}
+
+	\underline{output}
+	\begin{itemize}
+		\item \textbf{EncryptedKey} (String): e encryptedKey is a concatenation of the cost, salt (base64 encoded) and ciphertext (base64 encoded) of the key provided by the user. The encryptedKey will be outputted to the application, which can then be stored in a database, as an example. 
+	\end{itemize}
+
+\section{Relevant Facts and Assumptions}
+\subsection{Facts}
+	\begin{itemize}
+		\item Eksblowfish is a purposely slow algorithm.
+		\item Powerful hardware does not decrease the security against brute force attack
+	\end{itemize}
+
+\subsection{Assumptions}
+	\begin{itemize}
+		\item Developers using this library will have a basic understanding of web development with JavaScript and NodeJS.
+		\item Web applications using this library will be published on a server that can support NodeJS applications.
+
+	\end{itemize} 
+\section*{\centering {Functional Requirements}}
+\section{The Scope of the Work}
+\subsection{The Current Situation}
+	 JScrypt is a library for NodeJS designed to provide reliable, user-friendly, and robust encryption functionality. This will mainly be done by using an encryption algorithm called Eksblowfish. The library will be tremendously simple to use for developers as it will only require the user to provide a password to encrypt and then store an encrypted password provided by the library. Likewise, a developer can easily compare a non-encrypted password with an encrypted one by simply using a function provided by the library. Additionally, many of the current encryption algorithms are prone to brute-force attacks while the Eksblowfish algorithm  is mostly impervious.
+
+
+\subsection{The Context of the Work}
+
+	\begin{figure}[H]
+	\centerline{\includegraphics{context.png}}
+	\caption{Context of the Work}
+	\end{figure}
+
+
+\subsection{Work Partitioning}
+	Refer to Table 1
+	\begin{table}[H]
+
+	    \caption{Work Partitioning}
+	    \label{tab:table1}
+	    % \label{tab: Table 1}
+
+	    \begin{tabular}{ | p{4cm} | p{4cm} | p{7cm}| }
+	    	\hline
+	      		Event & Input/Output & Summary \\
+	      \hline
+
+	     		1. App prompts key & none & Application asks user to enter a password, credit card number, or any other sensitive information \\
+	     \hline
+
+	     	2. User enters key & plainTextKey(input) & User sends key to the application \\
+	     \hline
+
+	     	3. App verifies key & validKeyCheck(output) & check if key provided by the user meets all criterias required \\
+
+	     \hline
+
+	     	4. App encrypts key & key(output), cost(output),salt(output), encryptedKey(input) & App provides library with key, cost and salt to encrypt the key. Encrypted key is returned \\
+	     \hline
+	     	5. Store key & none & App stores key in a desired database \\
+	     \hline
+	     	6. Compare Key & plainTextKey(input), authorized(output) & JScrypt determines whether the plainTextKey matches an encrypted key \\
+	     \hline
+	    \end{tabular}
+	   
+	\end{table}
+
+\section{Scope of the Product}
+
+\subsection{Product Boundary}
+	Refer to Figure 1	
+
+\subsection{Product Use Case}
+	\begin{figure}[H]
+	\centerline{\includegraphics{usesCase.png}}
+	\caption{Uses Case Diagram}
+	\end{figure}
+
+
+\section{Fuctional and Data Requirements}
+
+\subsection{Functional Requirements}
+
+	\textbf{Requirement \#: 1}\\
+	\textbf{Requirement Type: 9	}\\
+	\textbf{Event/use case: 2,4}\\
+	\textbf{Description:} The product shall be able to accept a string and encrypt it.\\
+	\textbf{Rationale:} Information stored in plain text is vulnerable if the information in a database was breached. Encrypting the information adds an extra layer of security for protect sensitive details.\\
+	\textbf{Fit Criterion:} No unauthorized applications can decrypt the encrypted string.
+
+	\noindent\rule{12cm}{0.4pt} \\ 
+
+	\noindent\textbf{Requirement \#: 2}\\
+	\textbf{Requirement Type: 9	}\\
+	\textbf{Event/use case: 6}\\
+	\textbf{Description:} TThe product shall be able to take an encrypted string and decrypt it to restore to plain text.\\
+	\textbf{Rationale:} Information needs to be decryptable so that it can still be used and read by authorized programs and users.	\\
+	\textbf{Fit Criterion:} No unauthorized applications can decrypt the encrypted string.\\
+
+	\noindent\rule{12cm}{0.4pt} \\ 
+
+	\noindent\textbf{Requirement \#: 3}\\
+	\textbf{Requirement Type: 9	}\\
+	\textbf{Event/use case: 6}\\
+	\textbf{Description:} The product shall be able to verify a plain text string and an encrypted string for equality.\\
+	\textbf{Rationale:} The product needs to be able to confirm information between plain text and encrypted strings without decrypting the encrypted string.\\
+	\textbf{Fit Criterion:} No unauthorized applications can decrypt the encrypted string.\\
+
+	\noindent\rule{12cm}{0.4pt} \\ 
+
+	\noindent\textbf{Requirement \#: 1}\\
+	\textbf{Requirement Type: 9	}\\
+	\textbf{Event/use case: 2,4}\\
+	\textbf{Description:} The product shall be able to accept a string and encrypt it.\\
+	\textbf{Rationale:} Information stored in plain text is vulnerable if the information in a database was breached. Encrypting the information adds an extra layer of security for protect sensitive details.\\
+	\textbf{Fit Criterion:} No unauthorized applications can decrypt the encrypted string.
+
+	\noindent\rule{12cm}{0.4pt} \\
+
+	\noindent\textbf{Requirement \#: 4}\\
+	\textbf{Requirement Type: 9	}\\
+	\textbf{Event/use case: 6}\\
+	\textbf{Description:} The product shall be able to verify an encrypted string and a plain text string for equality.\\
+	\textbf{Rationale:} The product needs to be able to confirm information between encrypted strings and plain text strings without decrypting the encrypted string.\\
+	\textbf{Fit Criterion:} No unauthorized applications can decrypt the encrypted string.\\
+
+	\noindent\rule{12cm}{0.4pt} \\
+
+	\noindent\textbf{Requirement \#: 5}\\
+	\textbf{Requirement Type: 9	}\\
+	\textbf{Event/use case: 4}\\
+	\textbf{Description:} The product shall create an encrypted string which cannot be brute forced easily.\\
+	\textbf{Rationale:}  Powerful hardware is capable of brute forcing through some encryption methods such as MD5. The eksblowfish algorithm scales with Moore’s Law and is intentionally slow which deters users from brute forcing the JScrypt’s encrypted strings.\\
+	\textbf{Fit Criterion:}No unauthorized applications can decrypt the encrypted string easily through a brute force method.\\
+
+	\noindent\rule{12cm}{0.4pt} \\
+
+	\noindent\textbf{Requirement \#: 6}\\
+	\textbf{Requirement Type: 9	}\\
+	\textbf{Event/use case: 3 }\\
+	\textbf{Description:} The key provided by the user must not exceed 448 bits, which is equivalent to 56 ASCII characters.\\
+	\textbf{Rationale:} By the way Eksblowfish and Blowfish is designed, the restriction on the key size ensures each bit of the subkeys is dependent on each bit of key.\\
+	\textbf{Fit Criterion:}A key size must be checked prior to encryption or decryption.\\ \\ \\
+
+
+
+	
+
+	
+\section*{\centering {Non-Functional Requirements}}
+
+\section {Look and Feel Requirements}
+
+\subsection {Appearance Requirements}
+N/A
+
+\subsection {Style Requirements}
+N/A
+
+\section {Usability and Humanity Requirements}
+
+\subsection {Ease of Use Requirement}
+Library should be easily implemented in any application, by developers with basic experience in NodeJS and JavaScript.
+
+\subsection {Personalization and Internationalization Requirements}
+There is no language barrier with using the library, but documentation will be written in english.
+
+\subsection {Learning Requirements}
+Any guidance required to use this library will be provided in the project documentation.
+
+\subsection {Understandability and Politeness Requirements}
+Users are only required to understand the implementation of the provided API functions. They are not required to understand the design.
+
+\subsection {Accessibility Requirements}
+N/A
+
+\section {Performance Requirements}
+
+\subsection {Speed and Latency Requirements}
+\begin{itemize}
+	\item The speed of the algorithm is directly proportional to the cost parameter given by the user.
+	\item It is meant to be purposely slow.
+\end{itemize}
+
+\subsection {Safety-Critical Requirements}
+N/A
+
+\subsection {Precision or Accuracy Requirements}
+N/A
+
+\subsection {Reliability and Availability Requirements}
+\begin{itemize}
+	\item The library will be made open-source to all developers.
+	\item The library will only be in use each time the library functions are called and does not make changes to the application in question.
+\end{itemize}
+
+\subsection {Robustness or Fault-Tolerance Requirements}
+If the developers accidently sends the wrong information to be encrypted/decrypted by JScrypt, there is no way of catching this error, and it is solely up to the developer to assure the information is consistent.
+
+\subsection {Capacity Requirements}
+There is no capacity to number of users using the library and the number of times the library is used.
+
+
+\subsection {Scalability or Extensibility Requirements}
+N/A
+
+\subsection {Longevity Requirements}
+N/A
+
+\section {Operational and Environmental Requirements}
+
+\subsection {Expected Physical Environment}
+Application running on NodeJS will be required to run the library
+
+\subsection {Requirements for Interfacing with Adjacent Systems}
+The library will be available for any operating system
+
+\subsection {Productization Requirements}
+N/A
+
+\subsection {Release Requirements}
+The library is open source, thus it is always under development and available for use.
+
+\section {Maintainability and Support Requirements}
+
+\subsection {Maintenance Requirements}
+Since the project is open sourced to the public, suggestion for improvements will be taken through pull request.
+
+\subsection {Supportability Requirements}
+The library will not be constantly supported, nonetheless the source code will be available for examination and improvements by the public.
+
+\subsection {Adaptability Requirements}
+N/A
+
+\section {Security Requirements}
+
+\subsection {Access Requirements}
+\begin{itemize}
+	\item Access to the library’s source code is open to the public.
+	\item Developers will have access to make changes to a local version of the project. Any changes to the live version of the project must be submitted through a pull request which may or may not be accepted.
+\end{itemize}
+
+\subsection {Integrity Requirements}
+N/A
+
+\subsection {Privacy Requirements}
+The library shall not reveal, store or send any sensitive information that is provided by the user. 
+
+\subsection {Audit Requirements}
+N/A
+
+\subsection {Immunity Requirements}
+N/A
+
+\section {Cultural and Political Requirements}
+
+\subsection {Cultural Requirements}
+\begin{itemize}
+	\item The library in no way implies any cultural offense.
+	\item Due to the way the algorithm is implemented, only ASCII character keys are allowed.
+	\end{itemize}
+
+\subsection {Political Requirements}
+N/A
+
+\section {Legal Requirements}
+
+\subsection {Compliance Requirements}
+JScrypt must follow the same algorithmic structure for encrypting and decrypting as Eksblowfish in order to satisfy the security of the key encryption.
+
+\subsection {Standards Requirements}
+JScrypt must comply with all encryption standards \\ \\ \\
+
+\section*{\centering{Project Issues}}
+
+\section {Open Issues}
+There are no issues to be considered at this stage of the development process.
+
+\section {Off the shelf solutions}
+There exists many implementations of JScrypt, in multiple languages, which can be used as reference.
+
+\section {New Problems}
+JScrypt is simply taking a string parameter, manipulating the string and returning an output. This process should not create any new problems for users of this library.
+
+\section {Tasks}
+\begin{itemize}
+	\item Requirements document revision 0
+	\item Test plan revision 0
+	\item Proof of concept demonstration
+	\item Design document revision 0
+	\item Revision 0 demonstration
+	\item User's guide revision 0
+	\item Test report revision 0
+	\item Write final revisions to documentation
+	\end{itemize}
+
+\section {Migration to the New Product}
+N/A  
+
+\section {Risks}
+In the event of a security breach, developers may hold the creators of JScrypt liable for creating an insecure encryption method.
+
+\section {Costs}
+There are no costs associated with the development and use of this project. There are indirect costs which developers will have to pay for if they choose to use a server hosting service to deploy the application with.
+
+\section {User Documentation and Training}
+Users will be able to download JScrypt through the public repository it will be uploaded onto. There will also be a readme markdown file describing how to use the different JScrypt APIs.
+
+\section{Waiting Room}
+\begin{itemize}
+	\item Future releases may have documentation in other spoken languages.
+	\item JScrypt could possibly be implemented to directly connect with a database system.
+	\end{itemize}
+
+
+\section{Ideas for Solutions}
+\begin{itemize}
+	\item Users of JScrypt will be requested to translate the documentation in any language they are comfortable with.
+	\item Create functionality to connect to a database and store encrypted password directly. Could possibly accomplished by other developers contributing to the library.
+	\end{itemize}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
